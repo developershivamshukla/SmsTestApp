@@ -6,9 +6,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.widget.Toast;
 
-/**
- * Created by HP on 29-03-2018.
- */
 
 public class SmsDeliveryReport extends BroadcastReceiver {
     @Override

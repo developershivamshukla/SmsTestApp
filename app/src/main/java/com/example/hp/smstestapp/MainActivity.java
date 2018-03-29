@@ -27,6 +27,7 @@ import android.widget.EditText;
 import com.example.hp.smstestapp.Database.ComplaintContract;
 
 import static com.example.hp.smstestapp.Util.splitMsg;
+import static com.example.hp.smstestapp.Util.startJob;
 
 public class MainActivity extends AppCompatActivity {
     private final String DELIVERED = "SMS_DELIVERED";
@@ -55,7 +56,6 @@ public class MainActivity extends AppCompatActivity {
         mTelephonyManager.listen(mPhoneStatelistener, PhoneStateListener.LISTEN_SIGNAL_STRENGTHS);
 
         deliveryReportReceiver = new SmsDeliveryReport();
-
         sendButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -83,8 +83,7 @@ public class MainActivity extends AppCompatActivity {
                         values.put(ComplaintContract.SmsDelivery.COLUMN_MSG_BODY, editText.getText().toString());
                         values.put(ComplaintContract.SmsDelivery.COLUMN_DELIVERY_REPORT, "not_sent");
                         getContentResolver().insert(ComplaintContract.SmsDelivery.CONTENT_URI, values);
-                        SharedPreferences.Editor sharedPreferences = getSharedPreferences("msg_delivery_report",0).edit();
-                        sharedPreferences.putBoolean("all_sent",false);
+                        startJob(MainActivity.this);
                     }
 
 
@@ -98,6 +97,12 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         registerReceiver(deliveryReportReceiver, new IntentFilter(DELIVERED));
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        unregisterReceiver(deliveryReportReceiver);
     }
 
     @Override

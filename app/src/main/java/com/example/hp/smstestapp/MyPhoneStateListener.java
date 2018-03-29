@@ -1,6 +1,7 @@
 package com.example.hp.smstestapp;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.telephony.PhoneStateListener;
 import android.telephony.ServiceState;
@@ -10,7 +11,7 @@ import android.util.Log;
 
 
 public class MyPhoneStateListener extends PhoneStateListener {
-    int mSignalStrength = 0;
+    int mSignalStrength, prevSignalStrength = 0;
     Context mContext;
 
     public MyPhoneStateListener(Context context) {
